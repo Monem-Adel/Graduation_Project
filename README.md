@@ -5,7 +5,7 @@ Our Graduation Project (ِAutomaton Recognition) for the year 2023-2024, Compute
 • Abd El-monem Adel Ramadan <br>
 • Bassam El-araby <br>
 • Abd El-rahman Mohamed <br>
-• PHilopatear Maged <br>
+• Philopateer Maged <br>
 
 Added 5 directories; segmentation, classification, scanner, parser, and application
 <br>
