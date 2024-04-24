@@ -1,16 +1,16 @@
-import cv2
-from PIL import Image
+# import cv2
+# from PIL import Image
 
 # method to convert image to binary
 # the parameter image is the path of the image
-def convertToBinary(image):
-    # read the image from the path in gray scale color system
-    # cv2.IMREAD_GRAYSCALE ≡ 2
-    img = cv2.imread(image,cv2.IMREAD_GRAYSCALE) # return a numpy object
+# def convertToBinary(image):
+#     # read the image from the path in gray scale color system
+#     # cv2.IMREAD_GRAYSCALE ≡ 2
+#     img = cv2.imread(image,cv2.IMREAD_GRAYSCALE) # return a numpy object
 
-    # convert to binary depending on the threshold value
-    _ , binaryImg = cv2.threshold(img,128,255,cv2.THRESH_BINARY_INV)
-    return binaryImg
+#     # convert to binary depending on the threshold value
+#     _ , binaryImg = cv2.threshold(img,128,255,cv2.THRESH_BINARY_INV)
+#     return binaryImg
 
 # im = cv2.imread(r'H:\Scanner\00.jpg')
 # im = convertToBinary(r'H:\Scanner\00.jpg')
