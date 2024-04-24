@@ -1,5 +1,5 @@
-# import cv2
-# from PIL import Image
+import cv2
+from PIL import Image
 
 # method to convert image to binary
 # the parameter image is the path of the image
