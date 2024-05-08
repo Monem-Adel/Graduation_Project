@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "665434092773",
+    "project_id": "evelator-9370e",
+    "storage_bucket": "evelator-9370e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665434092773:android:14d927d30f5e73efaf100c",
+        "android_client_info": {
+          "package_name": "com.example.evaluator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBf_rmgmvYoBcWrtOWRWmXAhPysedl-7u8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
