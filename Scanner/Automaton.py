@@ -119,6 +119,12 @@ class automaton:
         return (source,destination)  
         # Transition.transition.set_source(source)
 
+    ##########################################
+    # nearst state method depending on the arrow direction
+    def nearest_states2():
+        pass
+    ##########################################
+
     # method to prepare the source & destination for each arrow (transition)
     def setting_src_des(self):
         for trans in self.__transitions:

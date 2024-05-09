@@ -1,5 +1,5 @@
-import cv2
-from PIL import Image
+# import cv2
+# from PIL import Image
 
 # method to convert image to binary
 # the parameter image is the path of the image
@@ -59,7 +59,7 @@ from PIL import Image
 # print(*list(st))
 
 # Initializing list
-lst = [1, 6, 3,3, 5,4]
+# lst = [1, 6, 3,3, 5,4]
 
-s = next((i for i in lst if i%2==0),'nn')
-print(s)
+# s = next((i for i in lst if i%2==0),'nn')
+# print(s)
