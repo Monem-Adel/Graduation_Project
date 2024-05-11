@@ -4,73 +4,93 @@ import State, Arrow
 # sys.path.append(r'H:\Scanner')
 # print(sys.path)
 
-# Note: the prefix __ of identifier is notation means that id is private
+# Note: the prefix  of identifier is notation means that id is private
 # transition class
 class transition:
 
     # constructor
-    def __init__(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = State.state(), destination:State.state= State.state()):
-    # def __init__(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = None, destination:State.state= None):
-    # def __init__(self,label, bbox:tuple, arrow:Arrow.arrow):
-        self.__label = label
-        self.__source = source
-        self.__destination = destination
-        self.__arrow = arrow
+    def init(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = State.state(), destination:State.state= State.state()):
+    # def init(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = None, destination:State.state= None):
+    # def init(self,label, bbox:tuple, arrow:Arrow.arrow):
+        self.label = label
+        self.source = source
+        self.destination = destination
+        self.arrow = arrow
         # bounding box (xt,yt,xb,yb) t: top left, r: bottom right
-        self.__bbox = bbox
+        self.bbox = bbox
         Xt,Yt,Xb,Yb = bbox
-        self.__top_left = (Xt,Yt) # top coordinate
-        self.__bottom_right = (Xb,Yb) # bottom coordinate
-        # the tensor of the image (if needed)
+        self.top_left = (Xt,Yt) # top coordinate
+        self.bottom_right = (Xb,Yb) # bottom coordinate
+        # the tensor of the image (if need1ed)
 
+    #another constructor to intialize without arrow class and add direction
+    def init(self,label, bbox:tuple,direction , source:State.state = State.state(), destination:State.state= State.state()):
+    # def init(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = None, destination:State.state= None):
+    # def init(self,label, bbox:tuple, arrow:Arrow.arrow):
+        self.label = label
+        self.source = source
+        self.destination = destination
+        # bounding box (xt,yt,xb,yb) t: top left, r: bottom right
+        self.bbox = bbox
+        self.direction = direction
+        Xt,Yt,Xb,Yb = bbox
+        self.top_left = (Xt,Yt) # top coordinate
+        self.bottom_right = (Xb,Yb) # bottom coordinate
+        # the tensor of the image (if needed)
+    
     # setters
     def set_label(self,label):
-        self.__label = label
+        self.label = label
 
     def set_source(self,source:State.state):
-        self.__source = source
+        self.source = source
 
     def set_destination(self,destination:State.state):
-        self.__destination = destination
+        self.destination = destination
 
     def set_arrow(self,arrow:Arrow.arrow):
-        self.__arrow = arrow
+        self.arrow = arrow
 
     def set_bbox(self,bbox : tuple):
-        self.__bbox = bbox
+        self.bbox = bbox
         Xt,Yt,Xb,Yb = bbox
-        self.__top_left = (Xt,Yt) # top coordinate
-        self.__bottom_right = (Xb,Yb) # bottom coordinate
+        self.top_left = (Xt,Yt) # top coordinate
+        self.bottom_right = (Xb,Yb) # bottom coordinate
+    
+    def set_direction(self, direction):
+        self.direction = direction
 
     # setters for top_left & bottom right
     # ...
     
     # getters
     def get_label(self):
-        return self.__label
+        return self.label
     
     def get_source(self):
-        return self.__source
+        return self.source
     
     def get_destination(self):
-        return self.__destination
+        return self.destination
     
     def get_arrow(self):
-        return self.__arrow
+        return self.arrow
     
     def get_top_coordinate(self):
-        return self.__top_left
+        return self.top_left
     
     def get_bottom_coordinate(self):
-        return self.__bottom_right
+        return self.bottom_right
     
     def get_bbox(self):
-        return self.__bbox
-        # return (*self.__top_left,*self.__bottom_right)
+        return self.bbox
+        # return (*self.top_left,*self.bottom_right)
 
+    def get_direction(self):
+        return self.direction
     # a method to return a tuple of source & destination
     def get_sourceAndDistination(self):
-        return (self.__source,self.__destination)
+        return (self.source,self.destination)
     
 # testing
 # # source = State.state('q0',State.Type_of_state.Start_State,(3,9,15,19))
