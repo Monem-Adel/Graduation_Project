@@ -14,7 +14,7 @@ class automaton:
     # flag to indicate there is only start state in the list or not (parser)
     # to check if there is more start state
     @staticmethod
-    def isUnique(stateList):
+    def isUnique(stateList): 
         count = 0
         for state in stateList:
             if(state.get_type() == State.Type_of_state.Start_State):
@@ -30,6 +30,7 @@ class automaton:
         self.__labels = labels
         self.__imagePath = imagePath # for keeping the path or the name of the image
         self.__image = image # assign the tensor of the image
+    
 
     # setters
     # to set all list
@@ -106,7 +107,6 @@ class automaton:
         # distance_front: distance between head & destination state
         for state in self.__states:
             # knowing the nearest state to the tail (defining source)
-            #هتعدل هنا على شوية حاجات؛ هتخلي الميثود اللي بتحسب مسافة واللي بتقارن ستاتيك ميثود
             distance_Back = automaton.compute_distance(arw.get_tail(),state.get_bottom_coordinate())
             if (automaton.compare_distances(distance_Back,minDistance_T)):
                 minDistance_T = distance_Back
@@ -119,12 +119,43 @@ class automaton:
         return (source,destination)  
         # Transition.transition.set_source(source)
 
-    # method to prepare the source & destination for each arrow (transition)
+    # method to prepare the source & destination for each arrow (transition) // cancelled //
+    # def setting_src_des(self):
+    #     for trans in self.__transitions:
+    #         source, destination = self.nearest_states(trans.get_arrow())
+    #         trans.set_source(source)
+    #         trans.set_destination(destination)
+#  Xt,Yt,Xb,Yb = bbox
+#         self.__top_left = (Xt,Yt) # top coordinate
+#         self.__bottom_right = (Xb,Yb) # bottom coordinate
     def setting_src_des(self):
         for trans in self.__transitions:
-            source, destination = self.nearest_states(trans.get_arrow())
-            trans.set_source(source)
-            trans.set_destination(destination)
+            min_source = 0
+            min_destination =0
+            tx0, ty0 ,tx1, ty1= trans.bbox #t are the coordinates of transition
+            if trans.direction == 'right':
+                for _state in self.__states: #t are the coordinates of states
+                    sx0, sy0, sx1, sy1 = _state.get_bbox()
+                    dis1 = self.compute_distance( (tx0, ty0), (sx1, sy1) )
+                    if (dis1 < min_source):
+                        min_source = dis1
+                        trans.set_source(_state)
+                    dis2 = self.compute_distance( (tx1, ty1), (sx0, sy0))
+                    if(dis2 < min_destination):
+                        min_destination = dis2
+                        trans.set_destination(_state)
+            elif trans.direction =='left':
+                 for _state in self.__states: #t are the coordinates of states
+                    sx0, sy0, sx1, sy1 = _state.get_bbox()
+                    dis1 = self.compute_distance( (tx0, ty0), (sx1, sy1) )
+                    if (dis1 < min_source):
+                        min_source = dis1
+                        trans.set_destination(_state)
+                    dis2 = self.compute_distance( (tx1, ty1), (sx0, sy0))
+                    if(dis2 < min_destination):
+                        min_destination = dis2
+                        trans.set_source(_state)
+
 
     
     # method to construct transition table (preparing 1st row & 1st column)
