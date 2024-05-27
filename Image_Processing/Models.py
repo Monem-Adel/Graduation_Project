@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms
-from pytesseract import pytesseract 
+from pytesseract import pytesseract
 import re
 #import sys
 #sys.path.append(r"D:\\4th\\Second Sem\\Graduation Project")
@@ -91,7 +91,7 @@ def classify_and_extract_states(image, model_yolo, model_classification, class_n
 # OCR
 def extract_text_from_image(image):
      
-    path_to_tesseract = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+    path_to_tesseract = r"C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
     
     def image_to_binary(image, threshold=127):
         
@@ -168,7 +168,7 @@ def extract_text_from_image(image):
 
     return cleaned_text
 #===============================================================================================
-def classify_and_extract_trans(image,model_yolo,model_classification,class_names):
+def classify_and_extract_trans(img,model_yolo,model_classification,class_names):
     trans =[]
     resultss = model_yolo.predict(source=img,conf=0.25)
         
@@ -177,7 +177,7 @@ def classify_and_extract_trans(image,model_yolo,model_classification,class_names
             x0, x1, y0, y1 = int(x0), int(x1), int(y0), int(y1)
 
             
-            cropped_image = image[y0:y1, x0:x1]
+            cropped_image = img[y0:y1, x0:x1]
 
             
             predicted_class = classify_image(cropped_image, model_classification, class_names)
@@ -306,14 +306,14 @@ def binary_image_size(binary_image):
         return height, width
 
 
-model_yolo = YOLO('SegModel.pt')
+model_yolo = YOLO('H:\Graduation Project\Graduation_Project\Image_Processing\SegModel.pt')
 model_classification = Net()
-model_classification.load_state_dict(torch.load('classification_model_weights.pth'))
+model_classification.load_state_dict(torch.load('H:\Graduation Project\Graduation_Project\Image_Processing\classification_model_weights.pth'))
 data_transform = transforms.Compose([
     transforms.Resize((32, 32)),  
     transforms.ToTensor(),
 ])
-image_dir = '.\\jflab'
+# image_dir = '.\\jflab'
 
 # Values for Start_State
 top_percentSS = 0.3
@@ -333,24 +333,33 @@ bottom_percentFS = 0.2
 left_percentFS = 0.2
 right_percentFS = 0.2
 
-for dirname, _, filenames in os.walk(image_dir):
-    for filename in filenames:
-        file_path = os.path.join(dirname, filename)
-        _, file_ext = os.path.splitext(filename)
-        if file_ext.lower() not in ['.png', '.jpg', '.jpeg']:
-            continue
+# for dirname, _, filenames in os.walk(image_dir):
+#     for filename in filenames:
+#         file_path = os.path.join(dirname, filename)
+#         _, file_ext = os.path.splitext(filename)
+#         if file_ext.lower() not in ['.png', '.jpg', '.jpeg']:
+#             continue
         
         
-        img = cv2.imread(file_path)
-        if img is None:
-            print(f"Error: Unable to read image from {file_path}")
-            continue
+#         img = cv2.imread(file_path)
+#         if img is None:
+#             print(f"Error: Unable to read image from {file_path}")
+#             continue
         
-        
-        img = cv2.resize(img, (500, 500))
+
+
+##################### WARNING: be carful while editing here cause it related with scanner file ##############
+def preparing_img(img_path):
+    img = cv2.imread(img_path)
+    _, img_ext = os.path.splitext(img_path)
+    if img is None or img_ext.lower() not in ['.png', '.jpg', '.jpeg']:
+        print(f"Error: Unable to read image from {img_path}")
+    img = cv2.resize(img, (500, 500))
+    return img
+
+def get_classified_States(img_path):
+        img = preparing_img(img_path)
         states = classify_and_extract_states(img, model_yolo, model_classification, class_names)
-        trans = classify_and_extract_trans(img,model_yolo,model_classification,class_names)
-        
         filtered_states = []
 
         for state in states:
@@ -366,10 +375,14 @@ for dirname, _, filenames in os.walk(image_dir):
             elif state['type'] == 'Final_State':
                 cropped_text_img = crop_image_with_percentagesFS(cropped_state_img, top_percentFS, bottom_percentFS, left_percentFS, right_percentFS)
             extracted_text = extract_text_from_image(cropped_text_img)
-            state['Label'] = extracted_text
-        print(f"Array of States: {filtered_states}")
+            state['name'] = extracted_text
+        return filtered_states
+#=======================================================================================
+#=========================================================================================
         
-        
+def get_classified_transitions(img_path):
+        img = preparing_img(img_path)
+        trans = classify_and_extract_trans(img,model_yolo,model_classification,class_names)
         filtered_trans = []
         x = 10
 
@@ -386,9 +399,9 @@ for dirname, _, filenames in os.walk(image_dir):
                 topmost, leftmost, rightmost = find_top_left_right_most(binary_matrix)
                 direction = determine_direction(topmost, leftmost, rightmost)
                 if direction == "left":
-                    a = "left arrow"
+                    a = "Left"
                 elif direction == "right":
-                    a = "right arrow"
+                    a = "Right"
                 else:
                     a = "Can't detect arrow dir"
             elif tran['type'] == 'Loop':    
@@ -398,5 +411,13 @@ for dirname, _, filenames in os.walk(image_dir):
             tran['Label'] = extracted_textt
             if tran['type'] == 'Transition':
                 tran['Direction'] = arrowdir
-        print(f"Array of Transitions: {filtered_trans}")
+        # print(f"Array of Transitions: {filtered_trans}")
+        return filtered_trans
+
+print("array of transition")
+print(get_classified_transitions('H:\Graduation Project\Graduation_Project\Scanner\\testGP.jpg'))
+print(f"Array of States")
+print(get_classified_States('H:\Graduation Project\Graduation_Project\Scanner\\testGP.jpg'))
 #============================================================================================-
+##############################################################################################################################
+

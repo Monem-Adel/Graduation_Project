@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./Scanner"
+        "./Scanner",
+        "./Image_Processing"
     ]
 }

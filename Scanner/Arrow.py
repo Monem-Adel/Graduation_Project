@@ -2,11 +2,13 @@ from enum import Enum
 
 # Enumeration for the types of states
 class Direction(Enum):
+    # name = value
     Loop = 0
     Up = 1
     Down = 2
     Right = 3
     Left = 4
+    # diagonal
 
 # class arrow
 class arrow:

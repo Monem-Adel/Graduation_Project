@@ -63,3 +63,26 @@
 
 # s = next((i for i in lst if i%2==0),'nn')
 # print(s)
+
+# my_dict = {'a': 1, 'b': 2, 'c': 3}
+
+# print(my_dict.get('n'))
+
+# s = {}
+# s.add(1)
+# s.add(2)
+# s.add(1)
+# print(s)
+# dic = {'one':1 , 'two':2,'three':3}
+# lst = [{'one':1 , 'two':2,'three':3},{'one':4 , 'two':5,'three':6},{'one':7 , 'two':8,'three':9}]
+# for i  in lst:
+#     i1 = i['one']
+#     i2 = i['two']
+#     i3 = i['three']
+#     print(i1)
+#     print(i2)
+#     print(i3)
+
+lst = []
+print(len(lst))
+    

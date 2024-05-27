@@ -68,3 +68,6 @@ class state :
 # print(f'The type of state is {test.get_type().name} and its enumeration is {test.get_type().value}')
 # print(f'The top left point is {test.get_top_coordinate()} & the bottom right bottom {test.get_bottom_coordinate()}')
 # print(f'The bounding box is {test.get_bbox()}')
+
+# print (Type_of_state.Final_State.name)
+# print (Type_of_state.Final_State.value)

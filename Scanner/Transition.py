@@ -3,14 +3,14 @@ import State, Arrow
 
 # sys.path.append(r'H:\Scanner')
 # print(sys.path)
-
+#
 # Note: the prefix __ of identifier is notation means that id is private
 # transition class
 class transition:
 
     # constructor
-    def __init__(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = State.state(), destination:State.state= State.state()):
-    # def __init__(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = None, destination:State.state= None):
+    # def __init__(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = State.state(), destination:State.state= State.state()):
+    def __init__(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = None, destination:State.state= None):
     # def __init__(self,label, bbox:tuple, arrow:Arrow.arrow):
         self.__label = label
         self.__source = source
@@ -50,9 +50,15 @@ class transition:
         return self.__label
     
     def get_source(self):
+        #if-raise
+        if (self.__source == None):
+            raise Exception("ERROR: haven't assigned source state to the transition")
         return self.__source
     
     def get_destination(self):
+        #if-raise
+        if (self.__destination == None):
+            raise Exception("ERROR: haven't assigned destination state to the transition")
         return self.__destination
     
     def get_arrow(self):
@@ -70,6 +76,9 @@ class transition:
 
     # a method to return a tuple of source & destination
     def get_sourceAndDistination(self):
+        #if-raise
+        if (self.__source == None or self.__destination == None):
+            raise Exception("ERROR: haven't assigned either source  or destination state to the transition")
         return (self.__source,self.__destination)
     
 # testing
