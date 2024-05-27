@@ -5,6 +5,8 @@ import State, Arrow
 # print(sys.path)
 
 # Note: the prefix  of identifier is notation means that id is private
+#
+# Note: the prefix __ of identifier is notation means that id is private
 # transition class
 class transition:
 
@@ -30,6 +32,13 @@ class transition:
         self.label = label
         self.source = source
         self.destination = destination
+    # def __init__(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = State.state(), destination:State.state= State.state()):
+    def __init__(self,label, bbox:tuple, arrow:Arrow.arrow, source:State.state = None, destination:State.state= None):
+    # def __init__(self,label, bbox:tuple, arrow:Arrow.arrow):
+        self.__label = label
+        self.__source = source
+        self.__destination = destination
+        self.__arrow = arrow
         # bounding box (xt,yt,xb,yb) t: top left, r: bottom right
         self.bbox = bbox
         self.direction = direction
@@ -68,10 +77,16 @@ class transition:
         return self.label
     
     def get_source(self):
-        return self.source
+        #if-raise
+        if (self.__source == None):
+            raise Exception("ERROR: haven't assigned source state to the transition")
+        return self.__source
     
     def get_destination(self):
-        return self.destination
+        #if-raise
+        if (self.__destination == None):
+            raise Exception("ERROR: haven't assigned destination state to the transition")
+        return self.__destination
     
     def get_arrow(self):
         return self.arrow
@@ -90,7 +105,10 @@ class transition:
         return self.direction
     # a method to return a tuple of source & destination
     def get_sourceAndDistination(self):
-        return (self.source,self.destination)
+        #if-raise
+        if (self.__source == None or self.__destination == None):
+            raise Exception("ERROR: haven't assigned either source  or destination state to the transition")
+        return (self.__source,self.__destination)
     
 # testing
 # # source = State.state('q0',State.Type_of_state.Start_State,(3,9,15,19))
