@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r"D:\3loom\4thYear\2ndSemester\GraduationProject\Graduation_Project\Scanner")
+sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner")
 print(sys.path)
 # Import file2.py
 import State

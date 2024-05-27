@@ -4,26 +4,29 @@
 # والفنكشن ده هتتناده في البرسر 
 # two functions one for scanner & another for parser
 import sys
-sys.path.append(r'H:\Graduation Project\Graduation_Project\Image_Processing')
-# print(sys.path)
+sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing")
+sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project")
+
+print(sys.path)
 
 import Automaton
 import State
 import Transition
 import Arrow
 import Models
+import Parser
 
 # method to take a path of image from the user
 def take_pic():
     ##### BASSAM #####
     # you can change this method or link it to the flutter
-    img_path = input("Enter the path of the image of the automaton")
+    img_path = input("Enter your image path")
     img_path.lower().strip()
     return img_path
 
 
 # img_path = 'H:\Graduation Project\Graduation_Project\Image_Processing\jflab\jflab2.png'
-img_path = take_pic()
+img_path = "D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner\\test.png"
 
 # (1st) method to scan the image & initialize the automaton (scanner method called once in the program)
 def scan_auto(img_path):
@@ -94,5 +97,22 @@ def scan_auto(img_path):
 # print(scan_auto(img_path))
 
 # (2nd) method to parse the automaton 
-def parse_auto():
-    pass
+def parse_auto(start_state, transition_table: list,test_cases: list):
+    parser  = Parser(start_state, transition_table)
+    results = parser.test_strings()
+    return results
+
+
+def test_all():
+    test_cases = ["0011", "1001"]
+    image_path = "D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner\\test.png"
+    image_path.lower().strip()
+    automaton, transition_table, start_state = scan_auto(image_path)
+    results = parse_auto(start_state, transition_table, test_cases)
+    i = 0
+    for result in results:
+        print("result for test case no "+ i+" is "+ result)
+        i = i+1
+
+test_all()
+

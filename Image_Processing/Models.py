@@ -306,9 +306,9 @@ def binary_image_size(binary_image):
         return height, width
 
 
-model_yolo = YOLO('H:\Graduation Project\Graduation_Project\Image_Processing\SegModel.pt')
+model_yolo = YOLO("D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing\\SegModel.pt")
 model_classification = Net()
-model_classification.load_state_dict(torch.load('H:\Graduation Project\Graduation_Project\Image_Processing\classification_model_weights.pth'))
+model_classification.load_state_dict(torch.load("D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing\\classification_model_weights.pth"))
 data_transform = transforms.Compose([
     transforms.Resize((32, 32)),  
     transforms.ToTensor(),
@@ -414,10 +414,10 @@ def get_classified_transitions(img_path):
         # print(f"Array of Transitions: {filtered_trans}")
         return filtered_trans
 
-print("array of transition")
-print(get_classified_transitions('H:\Graduation Project\Graduation_Project\Scanner\\testGP.jpg'))
-print(f"Array of States")
-print(get_classified_States('H:\Graduation Project\Graduation_Project\Scanner\\testGP.jpg'))
+# print("array of transition")
+# print(get_classified_transitions('H:\Graduation Project\Graduation_Project\Scanner\\testGP.jpg'))
+# print(f"Array of States")
+# print(get_classified_States('H:\Graduation Project\Graduation_Project\Scanner\\testGP.jpg'))
 #============================================================================================-
 ##############################################################################################################################
 
