@@ -14,12 +14,12 @@ class automaton:
     # flag to indicate there is only start state in the list or not (parser)
     # to check if there is more start state
     @staticmethod
-    def isStartUnique(stateList):
-        count = 0
-        for state in stateList:
-            if(state.get_type() == State.Type_of_state.Start_State):
-                count+=1
-        return (count == 1)
+    # def isStartUnique(stateList):
+    #     count = 0
+    #     for state in stateList:
+    #         if(state.get_type() == State.Type_of_state.Start_State):
+    #             count+=1
+    #     return (count == 1)
     
     # flag to indicate there is at least one final state in the list
     @staticmethod
@@ -33,30 +33,34 @@ class automaton:
 
     # constructor
     def __init__(self, states : State.state, transitions : Transition.transition, labels : set, imagePath, image=None) :
-        if(not automaton.isStartUnique(states)):
-            raise Exception("ERROR: the start state isn't unique or not found")
-        if(not automaton.isExistFinal(states)):
-            raise Exception("ERROR: the final state not found ; Must exist at least one final state")
-        else : self.__states = states
+        # if(not automaton.isStartUnique(states)):
+        #     raise Exception("ERROR: the start state isn't unique or not found")
+        # if(not automaton.isExistFinal(states)):
+        #     raise Exception("ERROR: the final state not found ; Must exist at least one final state")
+        # else : 
+        self.__states = states
         # case: is the No. of transitions sufficient w.r.t No. of states(n) => [|T| >= n-1]
-        if (len(transitions) < len(states)):
-            raise Exception("ERROR: the No. of transitions less than the No. of states OR there exist isolated state")
-        else : self.__transitions = transitions
+        # if (len(transitions) < len(states)):
+        #     raise Exception("ERROR: the No. of transitions less than the No. of states OR there exist isolated state")
+        # else : 
+        self.__transitions = transitions
         # case: the labels must be less than or equal the No. of transitions.
-        if(len(labels) > len(transitions)):
-            raise Exception("ERROR: the labels must be less than or equal the No. of transitions")
-        else : self.__labels = labels
+        # if(len(labels) > len(transitions)):
+        #     raise Exception("ERROR: the labels must be less than or equal the No. of transitions")
+        # else :
+        self.__labels = labels
         self.__imagePath = imagePath # for keeping the path or the name of the image
         # self.__image = image # assign the tensor of the image
 
     # setters
     # to set all list
     def set_states(self, states : State.state):
-        if(not automaton.isStartUnique(states)):
-            raise Exception("ERROR: the start state isn't unique or not found")
-        if(not automaton.isExistFinal(states)):
-            raise Exception("ERROR: the final state not found ; Must exist at least one final state")
-        else : self.__states = states
+        # if(not automaton.isStartUnique(states)):
+        #     raise Exception("ERROR: the start state isn't unique or not found")
+        # if(not automaton.isExistFinal(states)):
+        #     raise Exception("ERROR: the final state not found ; Must exist at least one final state")
+        # else : 
+            self.__states = states
 
     # HERE DEFINE a method to set one state in the list (if needed)(insert,delete,replace,...)
 
@@ -106,8 +110,8 @@ class automaton:
     
     # method to get the start state
     def get_start_state(self):
-        if (not automaton.isUnique(self.__states)):
-            raise Exception("ERROR: the start state isn't unique or not found")
+        # if (not automaton.isUnique(self.__states)):
+        #     raise Exception("ERROR: the start state isn't unique or not found")
         startState = next((state for state in self.__states if state.get_type() == State.Type_of_state.Start_State))
         return startState
     
@@ -144,6 +148,7 @@ class automaton:
         # distance_front: distance between head & destination state
         for state in self.__states:
             # knowing the nearest state to the tail (defining source)
+            #هتعدل هنا على شوية حاجات؛ هتخلي الميثود اللي بتحسب مسافة واللي بتقارن ستاتيك ميثود
             distance_Back = automaton.compute_distance(arw.get_tail(),state.get_bottom_coordinate())
             if (automaton.compare_distances(distance_Back,minDistance_T)):
                 minDistance_T = distance_Back

@@ -1,0 +1,21 @@
+states : list
+	name : str
+	type : enum
+	bbox : tuple
+
+transition : list
+	label : char
+	bbox : tuple
+	arrow :
+		direction : enum
+		tailPoint 
+		headPoint
+	---------------
+	source 
+	destination
+	----------		
+labels : set
+
+
+imgPath :string
+image : tensor

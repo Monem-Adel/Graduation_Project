@@ -83,6 +83,10 @@
 #     print(i2)
 #     print(i3)
 
-lst = []
-print(len(lst))
-    
+# lst = []
+# print(len(lst))
+
+import os 
+lst = ['1']
+lst.extend(os.listdir(r'H:\Graduation Project\Graduation_Project'))
+print(lst)

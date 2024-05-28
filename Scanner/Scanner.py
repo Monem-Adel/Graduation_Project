@@ -4,10 +4,12 @@
 # والفنكشن ده هتتناده في البرسر 
 # two functions one for scanner & another for parser
 import sys
-sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing")
-sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project")
+# sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing")
+# sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project")
+sys.path.append(r"H:\Graduation Project\Graduation_Project\Parser\Parser")
+sys.path.append(r"H:\Graduation Project\Graduation_Project\Image_Processing")
 
-print(sys.path)
+# print(sys.path)
 
 import Automaton
 import State
@@ -26,7 +28,7 @@ def take_pic():
 
 
 # img_path = 'H:\Graduation Project\Graduation_Project\Image_Processing\jflab\jflab2.png'
-img_path = "D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner\\test.png"
+# img_path = "D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner\\test.png"
 
 # (1st) method to scan the image & initialize the automaton (scanner method called once in the program)
 def scan_auto(img_path):
@@ -98,20 +100,21 @@ def scan_auto(img_path):
 
 # (2nd) method to parse the automaton 
 def parse_auto(start_state, transition_table: list,test_cases: list):
-    parser  = Parser(start_state, transition_table)
-    results = parser.test_strings()
+    parser  = Parser.parser(start_state, transition_table)
+    results = parser.test_strings(test_cases)
     return results
 
 
 def test_all():
-    test_cases = ["0011", "1001"]
-    image_path = "D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner\\test.png"
+    test_cases = ["00", "1001"]
+    # image_path = "D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner\\test.png"
+    image_path = take_pic()
     image_path.lower().strip()
     automaton, transition_table, start_state = scan_auto(image_path)
     results = parse_auto(start_state, transition_table, test_cases)
     i = 0
     for result in results:
-        print("result for test case no "+ i+" is "+ result)
+        print(f"result for test case no {i} is {result}")
         i = i+1
 
 test_all()

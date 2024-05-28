@@ -1,6 +1,6 @@
 import sys
 sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner")
-print(sys.path)
+# print(sys.path)
 # Import file2.py
 import State
 
@@ -28,7 +28,7 @@ def find(character ,table, direction ):
 
 
 
-class Parser:
+class parser:
     def __init__(self , start_state: State.state, transition_table):
         self.start_state = start_state
         self.transition_table = transition_table
