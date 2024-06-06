@@ -7,7 +7,8 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms
-from pytesseract import pytesseract
+#from pytesseract import pytesseract
+import easyocr
 import re
 #import sys
 #sys.path.append(r"D:\\4th\\Second Sem\\Graduation Project")
@@ -31,7 +32,6 @@ class Net(nn.Module):
         out = self.fc2(out)
         return out
 
-
 def classify_image(image, model, class_names):
     image_pil = Image.fromarray(image)
     
@@ -43,7 +43,6 @@ def classify_image(image, model, class_names):
     _, predicted = torch.max(output, 1)
     class_index = predicted.item()
     return class_names[class_index]
-
 
 def crop_transition(image, crop_index):
     #mage = cv2.imread(image_path)
@@ -63,7 +62,6 @@ def crop_transition(image, crop_index):
     #cv2.imwrite(os.path.join(output_folder, "remaining_image.jpg"), remaining_image)
 
     return cropped_image , remaining_image
-
 
 def classify_and_extract_states(image, model_yolo, model_classification, class_names):
     states = []
@@ -90,6 +88,7 @@ def classify_and_extract_states(image, model_yolo, model_classification, class_n
 
 # OCR
 def extract_text_from_image(image):
+
      
     path_to_tesseract = r"C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
     
@@ -167,6 +166,91 @@ def extract_text_from_image(image):
     cleaned_text = remove_special_characters(text.strip())
 
     return cleaned_text
+#EasyOCR
+def OCR(image): 
+    def zoom(img, zoom_factor=2.5):
+        return cv2.resize(img, None, fx=zoom_factor, fy=zoom_factor)
+    #blur = cv2.GaussianBlur(image,(5,5),0)
+    #image = cv2.imread(image)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #print(f"Image loaded successfully. Shape: {gray.shape}")
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    edged = cv2.Canny(blur, 10, 200)
+    zoomed_edges = zoom(edged, 2.5)
+    reader = easyocr.Reader(['en'])
+    result = reader.readtext(zoomed_edges)
+    for (bbox, text, prob) in result:
+        return text
+#####################################################################################
+def enhance_and_extract_text(image,zoom_factor):
+    def zoom(img, zoom_factor):
+        return cv2.resize(img, None, fx=zoom_factor, fy=zoom_factor)
+
+    # Load the image
+    #image = cv2.imread(image_path)
+    if image is None:
+        print("Error: Unable to load the image.")
+        return None
+
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    smoothed = cv2.bilateralFilter(gray, 9, 75, 75)
+    thresh = cv2.adaptiveThreshold(smoothed, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+    edges = cv2.Canny(thresh, 30, 200)
+    zoomed_edgess = cv2.resize(image, (1080, 1920))
+    zoomed_edges = zoom(zoomed_edgess, zoom_factor)
+    #zoomed_edges = cv2.resize(image, (1080, 1920))
+    reader = easyocr.Reader(['en'])
+    result = reader.readtext(zoomed_edges)
+    extracted_text = ""
+    for (bbox, text, prob) in result:
+        extracted_text += text + " "
+    return extracted_text.strip()
+
+#####################################################################################
+def OCRT(image): 
+    def zoom(img, zoom_factor=4):
+        return cv2.resize(img, None, fx=zoom_factor, fy=zoom_factor)
+    #blur = cv2.GaussianBlur(image,(5,5),0)
+    #image = cv2.imread(image)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #print(f"Image loaded successfully. Shape: {gray.shape}")
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    edged = cv2.Canny(blur, 10, 200)
+    zoomed_edges = zoom(edged, 4)
+    reader = easyocr.Reader(['en'])
+    result = reader.readtext(zoomed_edges)
+    for (bbox, text, prob) in result:
+        return text
+
+def OCRL(image): 
+    def zoom(img, zoom_factor=1):
+        return cv2.resize(img, None, fx=zoom_factor, fy=zoom_factor)
+    #blur = cv2.GaussianBlur(image,(5,5),0)
+    #image = cv2.imread(image)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #print(f"Image loaded successfully. Shape: {gray.shape}")
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    edged = cv2.Canny(blur, 10, 200)
+    zoomed_edges = zoom(edged, 1)
+    reader = easyocr.Reader(['en'])
+    result = reader.readtext(zoomed_edges)
+    for (bbox, text, prob) in result:
+        return text
+
+def OCRSS(image): 
+    def zoom(img, zoom_factor=4):
+        return cv2.resize(img, None, fx=zoom_factor, fy=zoom_factor)
+    #blur = cv2.GaussianBlur(image,(5,5),0)
+    #image = cv2.imread(image)
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #print(f"Image loaded successfully. Shape: {gray.shape}")
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    edged = cv2.Canny(blur, 10, 200)
+    zoomed_edges = zoom(edged, 4)
+    reader = easyocr.Reader(['en'])
+    result = reader.readtext(zoomed_edges)
+    for (bbox, text, prob) in result:
+        return text
 #===============================================================================================
 def classify_and_extract_trans(img,model_yolo,model_classification,class_names):
     trans =[]
@@ -234,22 +318,20 @@ def crop_image_with_percentagesFS(image, top_percentFS, bottom_percentFS, left_p
     return cropped_image
 
 def image_to_binary_matrix(image):
-    
+    # Convert the image to grayscale
     if len(image.shape) > 2:
         grayscale_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     else:
         grayscale_image = image
-        
     
+    # Apply a binary threshold to the grayscale image
     _, binary_image = cv2.threshold(grayscale_image, 127, 255, cv2.THRESH_BINARY)
-    
-    
+
+    # Invert the binary image
     binary_image = cv2.bitwise_not(binary_image)
     
-    
+    # Convert binary image to a binary matrix
     binary_image[binary_image == 255] = 1
-    
-    
     binary_matrix = np.array(binary_image, dtype=int)
     
     return binary_matrix
@@ -301,16 +383,107 @@ def determine_direction(topmost, leftmost, rightmost):
         else:
             return "neither"
 
-def binary_image_size(binary_image):
-        height, width = binary_image.shape
-        return height, width
+def compute_row_sum(binary_matrix):
+        row_sums = np.sum(binary_matrix, axis=1)
+        max_sum_index = np.argmax(row_sums)
+        return row_sums, max_sum_index
 
+def get_topmost_and_bottommost_index(binary_matrix):
+        topmost_coordinate = None
+        bottommost_coordinate = None
+    
+        # Iterate over rows from top to bottom for finding the top-most '1'
+        for i in range(len(binary_matrix)):
+            indices = np.where(binary_matrix[i] == 1)[0]
+            if len(indices) > 0:
+                topmost_coordinate = (i, indices[0])
+                break
+    
+        # Iterate over rows from bottom to top for finding the bottom-most '1'
+        for i in range(len(binary_matrix) - 1, -1, -1):
+            indices = np.where(binary_matrix[i] == 1)[0]
+            if len(indices) > 0:
+                bottommost_coordinate = (i, indices[-1])
+                break
+    
+        return topmost_coordinate, bottommost_coordinate
+
+def get_rightmost_in_highest_row(binary_matrix):
+        row_sums, max_sum_index = compute_row_sum(binary_matrix)
+        highest_row = binary_matrix[max_sum_index]
+        indices = np.where(highest_row == 1)[0]
+        if len(indices) > 0:
+            any_index = indices[0]  # You can choose any index. Here, we are choosing the first one.
+            return max_sum_index, any_index
+        else:
+            return max_sum_index, None
+
+def euclidean_distance(point1, point2):
+        x1, y1 = point1
+        x2, y2 = point2
+        distance = np.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        return distance
+
+def compute_closest_distance(binary_matrix):
+        topmost_coordinate, bottommost_coordinate = get_topmost_and_bottommost_index(binary_matrix)
+        highest_row_index, any_index_in_highest_row = get_rightmost_in_highest_row(binary_matrix)
+        any_index_coordinate = (highest_row_index, any_index_in_highest_row)
+
+        # Compute distances
+        distance_to_topmost = euclidean_distance(any_index_coordinate, topmost_coordinate)
+        distance_to_bottommost = euclidean_distance(any_index_coordinate, bottommost_coordinate)
+
+        # Determine which one is nearer
+        if distance_to_topmost < distance_to_bottommost:
+            nearer = "UP"
+            top = topmost_coordinate
+            bottom = bottommost_coordinate
+            nearer_distance = distance_to_topmost
+            head = top 
+            tail = bottom
+            return nearer,head,tail 
+        else:
+            nearer = "Down"
+            top = topmost_coordinate
+            bottom = bottommost_coordinate
+            nearer_distance = distance_to_bottommost
+            head = bottom
+            tail = top
+            return nearer,head,tail       
+
+def crop_image_from_left(image, crop_width):
+    # Get image dimensions
+    height, width, _ = image.shape
+    
+    # Define the region of interest (ROI) for cropping from the left
+    x_start_left = 0
+    x_end_left = crop_width
+    y_start_left = 0
+    y_end_left = height
+    
+    # Crop the image from the left
+    cropped_image_left = image[y_start_left:y_end_left, x_start_left:x_end_left]
+    
+    # Define the region of interest (ROI) for the remaining part of the image
+    x_start_remaining = crop_width
+    x_end_remaining = width
+    y_start_remaining = 0
+    y_end_remaining = height
+    
+    # Crop the remaining part of the image
+    cropped_image_remaining = image[y_start_remaining:y_end_remaining, x_start_remaining:x_end_remaining]
+    
+    return cropped_image_left, cropped_image_remaining
+
+def binary_image_size(binary_image):
+        height, width ,d= binary_image.shape
+        return height, width, d
 
 # model_yolo = YOLO("D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing\\SegModel.pt")
-model_yolo = YOLO(r"H:\Graduation Project\Graduation_Project\Image_Processing\SegModel.pt")
+model_yolo = YOLO('65v2.pt')
 model_classification = Net()
 # model_classification.load_state_dict(torch.load("D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing\\classification_model_weights.pth"))
-model_classification.load_state_dict(torch.load(r"H:\Graduation Project\Graduation_Project\Image_Processing\classification_model_weights.pth"))
+model_classification.load_state_dict(torch.load('ClassificationModel_weights.pth'))
 data_transform = transforms.Compose([
     transforms.Resize((32, 32)),  
     transforms.ToTensor(),
@@ -347,20 +520,18 @@ right_percentFS = 0.2
 #         if img is None:
 #             print(f"Error: Unable to read image from {file_path}")
 #             continue
-        
-
-
 ##################### WARNING: be carful while editing here cause it related with scanner file ##############
 def preparing_img(img_path):
-    img = cv2.imread(img_path)
-    _, img_ext = os.path.splitext(img_path)
-    if img is None or img_ext.lower() not in ['.png', '.jpg', '.jpeg']:
-        print(f"Error: Unable to read image from {img_path}")
-    img = cv2.resize(img, (500, 500))
-    return img
+    image = cv2.imread(img_path,1)
+    if image is None:
+        raise ValueError(f"Error: Unable to read image from {img_path}")
+    return image
 
 def get_classified_States(img_path):
         img = preparing_img(img_path)
+        print(img.shape)
+        zoom_factorr = 0.5
+        #img = img_path
         states = classify_and_extract_states(img, model_yolo, model_classification, class_names)
         filtered_states = []
 
@@ -371,55 +542,83 @@ def get_classified_States(img_path):
             x0, y0, x1, y1 = state['bbox']
             cropped_state_img = img[y0:y1, x0:x1]
             if state['type'] == 'Start_State':
-                cropped_text_img = crop_image_with_percentagesSS(cropped_state_img, top_percentSS, bottom_percentSS, left_percentSS, right_percentSS)
+                cropped_text_img = enhance_and_extract_text(cropped_state_img,zoom_factorr)
             elif state['type'] == 'State':
-                cropped_text_img = crop_image_with_percentagesS(cropped_state_img, top_percentS, bottom_percentS, left_percentS, right_percentS)
+                cropped_text_img = enhance_and_extract_text(cropped_state_img,zoom_factorr)
             elif state['type'] == 'Final_State':
-                cropped_text_img = crop_image_with_percentagesFS(cropped_state_img, top_percentFS, bottom_percentFS, left_percentFS, right_percentFS)
-            extracted_text = extract_text_from_image(cropped_text_img)
+                cropped_text_img = enhance_and_extract_text(cropped_state_img,zoom_factorr)
+            extracted_text = cropped_text_img
             state['name'] = extracted_text
         return filtered_states
 #=======================================================================================
 #=========================================================================================
-        
 def get_classified_transitions(img_path):
+      try:
+        img = preparing_img(img_path)
+        print("Image shape:", img.shape) 
+        a = None
+        head_coord = None
+        tail_coord = None
         img = preparing_img(img_path)
         trans = classify_and_extract_trans(img,model_yolo,model_classification,class_names)
         filtered_trans = []
-        x = 10
-
+        x = 25
+        crop_width_value = 29
+        zoom_factorr = 0.5
         for tran in trans:
             if tran['type'] in ['Transition', 'Loop']:
                 filtered_trans.append(tran)
         for tran in filtered_trans:
             x0, y0, x1, y1 = tran['bbox']
-            cropped_state_image = img[y0:y1, x0:x1]
+            cropped_trans_image = img[y0:y1, x0:x1]
+            #print(cropped_trans_image.shape)
             if tran['type'] == 'Transition':
-                _,cropped_text_image = crop_transition(cropped_state_image,x)
-                croppedimage,_ = crop_transition(cropped_state_image,x)
-                binary_matrix = image_to_binary_matrix(croppedimage)
-                topmost, leftmost, rightmost = find_top_left_right_most(binary_matrix)
-                direction = determine_direction(topmost, leftmost, rightmost)
-                if direction == "left":
-                    a = "Left"
-                elif direction == "right":
-                    a = "Right"
-                else:
-                    a = "Can't detect arrow dir"
+                h , w ,d= binary_image_size(cropped_trans_image)
+                if w > h:
+                    _,cropped_text_image = crop_transition(cropped_trans_image,x)
+                    croppedimage,_ = crop_transition(cropped_trans_image,x)
+                    binary_matrix = image_to_binary_matrix(croppedimage)
+                    topmost, leftmost, rightmost = find_top_left_right_most(binary_matrix)
+                    direction = determine_direction(topmost, leftmost, rightmost)
+                    extracted_textt = enhance_and_extract_text(cropped_trans_image,zoom_factorr)
+                    tran['Label'] = extracted_textt
+                    if direction == "left":
+                        a = "Left"
+                        head_coord = leftmost
+                        tail_coord = rightmost
+                    elif direction == "right":
+                        a = "Right"
+                        head_coord = rightmost
+                        tail_coord = leftmost
+                    else:
+                        a = "Can't detect arrow dir"
+                elif h > w:
+                    _,cropped_arrow_image = crop_image_from_left(cropped_trans_image,crop_width_value)
+                    binary_matrix = image_to_binary_matrix(cropped_arrow_image)
+                    directionoftrans,head_coord , tail_coord = compute_closest_distance(binary_matrix)
+                    extracted_textt = enhance_and_extract_text(cropped_trans_image,zoom_factorr)
+                    a = directionoftrans
+                    tran['Label'] = extracted_textt
+
             elif tran['type'] == 'Loop':    
-                _,cropped_text_image = crop_transition(cropped_state_image,x)
-            extracted_textt = extract_text_from_image(cropped_text_image)
+                #_,cropped_text_image = crop_transition(cropped_trans_image,x)
+                extracted_textt = enhance_and_extract_text(cropped_trans_image,zoom_factorr)
+                tran['Label'] = extracted_textt
             arrowdir = a
-            tran['Label'] = extracted_textt
+            head = head_coord
+            tail = tail_coord
             if tran['type'] == 'Transition':
                 tran['Direction'] = arrowdir
-        # print(f"Array of Transitions: {filtered_trans}")
+                tran['Head '] = head
+                tran['Tail '] = tail
+         #print(f"Array of Transitions: {filtered_trans}")
         return filtered_trans
+      except Exception as e:
+        print("Error during image processing:", e)
 
-# print("array of transition")
-# print(get_classified_transitions('H:\Graduation Project\Graduation_Project\Scanner\\testGP.jpg'))
-# print(f"Array of States")
-# print(get_classified_States('H:\Graduation Project\Graduation_Project\Scanner\\testGP.jpg'))
+print("array of transition")
+print(get_classified_transitions('auto_2.jpg'))
+#print(f"Array of States")
+#print(get_classified_States('auto_2.jpg'))
 #============================================================================================-
-##############################################################################################################################
-
+##############################################################################################
