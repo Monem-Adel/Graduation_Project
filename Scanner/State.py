@@ -15,7 +15,7 @@ class Type_of_state(Enum):
 class state :
 
     # constructor
-    def __init__(self,name = 'dummy',stateType : Type_of_state = Type_of_state.Normal_State , bbox:tuple = (-1,-1,-1,-1)):
+    def __init__(self,name = 'Dead',stateType : Type_of_state = Type_of_state.Normal_State , bbox:tuple = (-1,-1,-1,-1)):
         self.__name = name
         self.__Type_of_state = stateType
         # bounding box (xt,yt,xb,yb) t: top left, r: bottom right

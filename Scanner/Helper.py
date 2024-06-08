@@ -27,23 +27,48 @@
 
 
 
-# lst = ['s1','s2','s3','s4','s5','s6']
-# st={'1','2','3','4'}
-# table = [['#', *list(st)],['ddd','11'],['fff','22'],['ggg','2165']]
-# #sliced_list = original_list[start_row:end_row:step_row][start_col:end_col:step_col]
-# for row , item in zip(table[1:],range(len(lst))):
-#    row[0]=lst[item]
+lst = ['s1','s2','s3','s4','s5','s6']
+st={'1','2','3','4'}
+
+table = [['dummy' for _ in range(len(st)+1)] for _ in range(len(lst)+1)]
+
+
+print(table)
+
+table [0][0:] = ['#',*list(st)]
+# table = [['#', *st]]
+#sliced_list = original_list[start_row:end_row:step_row][start_col:end_col:step_col]
+
+for row , item in zip(table[1:],range(len(lst))):
+   row[0]=lst[item]
 # print(len(table))
 # print(len(table[1:]))
-# N=len(table[1:])
+N=len(table[1:])
 # print(len(lst)-len(table[1:]))
 # print(range(abs(len(lst)-len(table[1:]))))
-# for item in range(len(lst)-len(table[1:])):
-#     table.append([lst[item+N]])
-#     print(item)
+for item in range(len(lst)-len(table[1:])):
+    table.append([lst[item+N]])
+    # print(item)
 # print(table)
-# # table[4].append('ggf')
-# # print(table[4][1])
+# for c in range(len(st)):
+#     for r in range(len(lst)+1):
+#         table[r+1].append('Dummy')
+print(table)
+
+row = [r[0] for r in table].index('s4')
+col = table[0].index('3')
+
+# table[row].insert(col,"YA RAP")
+table[row][col] = 'YA RAP'
+
+print(table)
+
+# print([r[0] for r in table])
+# print([r[0] for r in table].index('s4'))
+# print(table[0].index('3'))
+
+# table[4].append('ggf')
+# print(table[4][1])
 # print(table[4][0])
 # table[4].insert(1,'mmmmmmm')
 # table[4][1]='0000'
@@ -86,7 +111,7 @@
 # lst = []
 # print(len(lst))
 
-import os 
-lst = ['1']
-lst.extend(os.listdir(r'H:\Graduation Project\Graduation_Project'))
-print(lst)
+# import os 
+# lst = ['1']
+# lst.extend(os.listdir(r'H:\Graduation Project\Graduation_Project'))
+# print(lst)

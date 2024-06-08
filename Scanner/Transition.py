@@ -92,3 +92,10 @@ class transition:
 # print(f'The destination state is : \n\t Name:{test.get_destination().get_name()}\n\t type: {test.get_destination().get_type().name}')
 # print(f'The bbox is : \n\t Name:{test.get_bbox()}')
 # print(f'The top left point is {test.get_top_coordinate()} & the bottom right bottom {test.get_bottom_coordinate()}')
+
+d = Arrow.Direction.Down
+t = transition('1',(2,2,2,2),Arrow.arrow(d))
+print(t.get_arrow().get_direction().name)
+print(t.get_arrow().get_direction().value)
+print(type(t.get_arrow().get_direction().name))
+print(type(t.get_arrow().get_direction().value))

@@ -14,12 +14,12 @@ class automaton:
     # flag to indicate there is only start state in the list or not (parser)
     # to check if there is more start state
     @staticmethod
-    # def isStartUnique(stateList):
-    #     count = 0
-    #     for state in stateList:
-    #         if(state.get_type() == State.Type_of_state.Start_State):
-    #             count+=1
-    #     return (count == 1)
+    def isStartUnique(stateList):
+        count = 0
+        for state in stateList:
+            if(state.get_type() == State.Type_of_state.Start_State):
+                count+=1
+        return (count == 1)
     
     # flag to indicate there is at least one final state in the list
     @staticmethod
@@ -33,33 +33,33 @@ class automaton:
 
     # constructor
     def __init__(self, states : State.state, transitions : Transition.transition, labels : set, imagePath, image=None) :
-        # if(not automaton.isStartUnique(states)):
-        #     raise Exception("ERROR: the start state isn't unique or not found")
-        # if(not automaton.isExistFinal(states)):
-        #     raise Exception("ERROR: the final state not found ; Must exist at least one final state")
-        # else : 
-        self.__states = states
+        if(not automaton.isStartUnique(states)):
+            raise Exception("ERROR: the start state isn't unique or not found")
+        if(not automaton.isExistFinal(states)):
+            raise Exception("ERROR: the final state not found ; Must exist at least one final state")
+        else : 
+            self.__states = states
         # case: is the No. of transitions sufficient w.r.t No. of states(n) => [|T| >= n-1]
-        # if (len(transitions) < len(states)):
-        #     raise Exception("ERROR: the No. of transitions less than the No. of states OR there exist isolated state")
-        # else : 
-        self.__transitions = transitions
+        if (len(transitions) < len(states)):
+            raise Exception("ERROR: the No. of transitions less than the No. of states OR there exist isolated state")
+        else : 
+            self.__transitions = transitions
         # case: the labels must be less than or equal the No. of transitions.
-        # if(len(labels) > len(transitions)):
-        #     raise Exception("ERROR: the labels must be less than or equal the No. of transitions")
-        # else :
-        self.__labels = labels
+        if(len(labels) > len(transitions)):
+            raise Exception("ERROR: the labels must be less than or equal the No. of transitions")
+        else :
+            self.__labels = labels
         self.__imagePath = imagePath # for keeping the path or the name of the image
         # self.__image = image # assign the tensor of the image
 
     # setters
     # to set all list
     def set_states(self, states : State.state):
-        # if(not automaton.isStartUnique(states)):
-        #     raise Exception("ERROR: the start state isn't unique or not found")
-        # if(not automaton.isExistFinal(states)):
-        #     raise Exception("ERROR: the final state not found ; Must exist at least one final state")
-        # else : 
+        if(not automaton.isStartUnique(states)):
+            raise Exception("ERROR: the start state isn't unique or not found")
+        if(not automaton.isExistFinal(states)):
+            raise Exception("ERROR: the final state not found ; Must exist at least one final state")
+        else : 
             self.__states = states
 
     # HERE DEFINE a method to set one state in the list (if needed)(insert,delete,replace,...)
@@ -110,8 +110,8 @@ class automaton:
     
     # method to get the start state
     def get_start_state(self):
-        # if (not automaton.isUnique(self.__states)):
-        #     raise Exception("ERROR: the start state isn't unique or not found")
+        if (not automaton.isStartUnique(self.__states)):
+            raise Exception("ERROR: the start state isn't unique or not found")
         startState = next((state for state in self.__states if state.get_type() == State.Type_of_state.Start_State))
         return startState
     
@@ -188,30 +188,30 @@ class automaton:
                 minDistance_bttm = distance_bttm
                 Q = state 
             
-        directionValue = trans.get_arrow().get_direction().value
+        directionValue = trans.get_arrow().get_direction().name
         # if the arrow is loop
-        if (directionValue == 0):
+        if (directionValue == 'Loop'):
             P = Q
             source = Q
             destination = Q
 
         # up
-        elif (directionValue == 1):
+        elif (directionValue == 'Up'):
             source = Q
             destination = P
                 
         # down
-        elif (directionValue == 2):
+        elif (directionValue == 'Down'):
             source = P
             destination = Q
                 
         # right
-        elif (directionValue == 3):
+        elif (directionValue == 'Right'):
             source = P
             destination = Q
                 
         # left
-        elif (directionValue == 4):
+        elif (directionValue == 'Left'):
             source = Q
             destination = P
                 
@@ -232,10 +232,17 @@ class automaton:
     
     # method to construct transition table (preparing 1st row & 1st column)
     def construct_table(self):
-        table = [['##',*self.__labels]]
+        # preparing the table with dummy values (None , 'Dead' ,'Dummy' or 'error')
+        if (len(self.__states) <=0 or len(self.__labels) <= 0):
+            raise Exception('ERROR: the lengths of states list or labels set is not valid')
+        deadState = State.state()
+        table = [[deadState for _ in range(len(self.__labels)+1)] for _ in range(len(self.__states)+1)] # declare a Dead state
+
+        # constructing the firt row & column
+        table[0][0:] = ['##',*self.__labels] # maybe IS THE SET LABELS ERROR ? Must cast it ? #
         # case: sort the alphabets in the list cause it come from set
         for row , item in zip(table[1:],range(len(self.__states))):
-            row[0] = self.__states[item]
+            row[0] = self.__states[item].get_name()
             # s = self.__states[item].get_name() # لو عايزها اسم بس كسترينج
             # row[0]=s
         # if length of states > length of table[1:]
@@ -244,6 +251,7 @@ class automaton:
             for item in range(len(self.__states)-shift_magnitude):
                 table.append([self.__states[item+shift_magnitude]])
                 # table.append([self.__states[item+shift_magnitude].get_name()])
+        
         return table
 
 
@@ -259,18 +267,19 @@ class automaton:
         for trans in self.__transitions:
             # indices to insert the destination in
             column_states = [r[0] for r in table]
-            row = column_states.index(trans.get_source())
+            row = column_states.index(trans.get_source().get_name())
             # row = self.__states.index(trans.get_source())+1 # we add +1 to skip the row 0 (1st row)
             col = table[0].index(trans.get_label())
-            # Handle the case where the item is not found
+            # Handle the case where the item is not found (try-except)
             value = trans.get_destination()
             # index(item) => get the first index of the item
             # case: if you construct table with dummy values take care it would be assignment operation not insert operation
-            # table[row][col] = value # assignment operation
-            table[row].insert(col,value) # insert operation
+            table[row][col] = value # assignment operation
+            table[row][col] = value.get_name() # assignment operation
+            # table[row].insert(col,value) # insert operation
 
         return table
-        pass
+        
 
 
 

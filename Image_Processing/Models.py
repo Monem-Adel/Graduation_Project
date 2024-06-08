@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms
-#from pytesseract import pytesseract
+from pytesseract import pytesseract
 import easyocr
 import re
 #import sys
@@ -480,10 +480,10 @@ def binary_image_size(binary_image):
         return height, width, d
 
 # model_yolo = YOLO("D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing\\SegModel.pt")
-model_yolo = YOLO('65v2.pt')
+model_yolo = YOLO(r'H:\Graduation Project\Graduation_Project\Image_Processing\65v2.pt')
 model_classification = Net()
 # model_classification.load_state_dict(torch.load("D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing\\classification_model_weights.pth"))
-model_classification.load_state_dict(torch.load('ClassificationModel_weights.pth'))
+model_classification.load_state_dict(torch.load(r'H:\Graduation Project\Graduation_Project\Image_Processing\ClassificationModel_weights.pth'))
 data_transform = transforms.Compose([
     transforms.Resize((32, 32)),  
     transforms.ToTensor(),
@@ -616,9 +616,9 @@ def get_classified_transitions(img_path):
       except Exception as e:
         print("Error during image processing:", e)
 
-print("array of transition")
-print(get_classified_transitions('auto_2.jpg'))
-#print(f"Array of States")
-#print(get_classified_States('auto_2.jpg'))
+# print("array of transition")
+# print(get_classified_transitions(r'H:\Graduation Project\Graduation_Project\Drawing_Automatons\auto_2.jpg'))
+# print(f"Array of States")
+# print(get_classified_States(r'H:\Graduation Project\Graduation_Project\Drawing_Automatons\auto_2.jpg'))
 #============================================================================================-
 ##############################################################################################

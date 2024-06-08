@@ -51,3 +51,7 @@ class arrow:
 # print(a.get_head())
 # print(type(a.get_head()))
 # print(a.get_tail())
+# d= Direction.Down
+# a=arrow(d)
+# print(a.get_direction().name)
+# print(a.get_direction().value)
