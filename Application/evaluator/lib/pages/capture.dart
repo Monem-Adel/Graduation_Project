@@ -145,5 +145,21 @@ class _CaptureState extends State<Capture> {
       print(e.toString());
     }
   }
+  Upload_Image_and_Text() async {
+    String text = _controller.text;
+    final request =
+        http.MultipartRequest('POST', Uri.parse("http://192.168.1.9:5000/api")); /*here you should write your  public ip address */
+    //final headers = {"Content-tyoe": "multipart/form-data"};
+    request.fields["str"] = text;
+    request.files.add(http.MultipartFile('image',
+        selectedImage!.readAsBytes().asStream(), selectedImage!.lengthSync(),
+        filename: selectedImage!.path.split("/").last));
+    //request.headers.addAll(headers);
+    final response = await request.send();
+    http.Response res = await (http.Response.fromStream(response));
+    final resJson = jsonDecode(res.body);
+    print(resJson['result']);
+    setState(() {});
+  }
 
 }
