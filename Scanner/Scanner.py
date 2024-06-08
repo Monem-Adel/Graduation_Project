@@ -96,24 +96,25 @@ def scan_auto(img_path):
     # return tuple (automaton object, transition table, start state)
     return (auto,table,start_state)
     # return auto
-auto ,t,st = scan_auto(r"H:\Graduation Project\Graduation_Project\Drawing_Automatons\auto_2.jpg")
-print(auto.get_states())
-print(auto.get_transitions())
-print(st)
-print('#'*10)
-print(t)
+
+# auto ,t,st = scan_auto(r"H:\Graduation Project\Graduation_Project\Drawing_Automatons\auto_2.jpg")
+# print(auto.get_states())
+# print(auto.get_transitions())
+# print(st)
+# print('#'*10)
+# print(t)
 
 # print(scan_auto(img_path))
 
 # (2nd) method to parse the automaton 
-def parse_auto(start_state, transition_table: list,test_cases: list):
+def parse_auto(start_state, transition_table: list,test_cases):
     parser  = Parser.parser(start_state, transition_table)
     results = parser.test_strings(test_cases)
     return results
 
 
 def test_all():
-    test_cases = ["0011", "1001"]
+    test_cases = ["111","0011", "1001"]
     # image_path = "D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner\\test.png"
     image_path = take_pic()
     image_path.lower().strip()
@@ -124,5 +125,4 @@ def test_all():
         print(f"result for test case no {i} is {result}")
         i = i+1
 
-# test_all()
-
+test_all()

@@ -1,8 +1,10 @@
 import sys
-sys.path.append(r"D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner")
+sys.path.append(r"D:\4th\Second Sem\Graduation Project\Graduation_Project\Scanner")
+sys.path.append(r"H:\Graduation Project\Graduation_Project\Scanner")
 # print(sys.path)
 # Import file2.py
 import State
+from State import state
 
 
 
@@ -26,6 +28,17 @@ def find(character ,table, direction ):
 
     return index
 
+def find_state(state , table):
+    # if isinstance(state_, state):
+    i = 1
+    index = -1
+    n = len(table)
+    while i < n :
+        table_content = table[i][0]
+        if table_content == state:
+            index = i
+        i+=1
+    return index
 
 
 class parser:
@@ -40,28 +53,28 @@ class parser:
         self.start_state = state
 
     def start_state_is_initial(self):
-        return self.start_state.get_state_type() == 0
+        return self.start_state.get_type().value == 0
 
 
     def evaluate_input(self, test_string):
         i = 0
         n = len(test_string)
         current_state = self.start_state
-        while i<n:
-            col_index = find(int(test_string[i]), self.transition_table, "column")
-            row_index = find(current_state, self.transition_table, "row")
+        while i < n:
+            col_index = find(test_string[i], self.transition_table, "column")
+            row_index = find_state(current_state, self.transition_table)
             if row_index == -1 or col_index == -1:
                 return False
             current_state = self.transition_table[row_index][col_index]
             i = i+1
 
-        if current_state.get_type() != 2:
+        if current_state.get_type().value != 2:
             return False
         else:
             return True
 
     
-    def test_strings (self , test_cases ):
+    def test_strings (self , test_cases):
         results = []
         for string in test_cases:
             results.append(self.evaluate_input(string))
@@ -74,8 +87,3 @@ class parser:
         while(i<n):
             print(f'test case no {i} result is: {results_list[i]}')
             i = i+1
-
-
-
-
-

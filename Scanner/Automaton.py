@@ -242,7 +242,8 @@ class automaton:
         table[0][0:] = ['##',*self.__labels] # maybe IS THE SET LABELS ERROR ? Must cast it ? #
         # case: sort the alphabets in the list cause it come from set
         for row , item in zip(table[1:],range(len(self.__states))):
-            row[0] = self.__states[item].get_name()
+            row[0] = self.__states[item]
+            # row[0] = self.__states[item].get_name()
             # s = self.__states[item].get_name() # لو عايزها اسم بس كسترينج
             # row[0]=s
         # if length of states > length of table[1:]
@@ -267,7 +268,8 @@ class automaton:
         for trans in self.__transitions:
             # indices to insert the destination in
             column_states = [r[0] for r in table]
-            row = column_states.index(trans.get_source().get_name())
+            row = column_states.index(trans.get_source())
+            # row = column_states.index(trans.get_source().get_name())
             # row = self.__states.index(trans.get_source())+1 # we add +1 to skip the row 0 (1st row)
             col = table[0].index(trans.get_label())
             # Handle the case where the item is not found (try-except)
@@ -275,7 +277,7 @@ class automaton:
             # index(item) => get the first index of the item
             # case: if you construct table with dummy values take care it would be assignment operation not insert operation
             table[row][col] = value # assignment operation
-            table[row][col] = value.get_name() # assignment operation
+            # table[row][col] = value.get_name() # assignment operation
             # table[row].insert(col,value) # insert operation
 
         return table
