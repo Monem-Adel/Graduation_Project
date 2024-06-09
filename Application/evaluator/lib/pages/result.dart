@@ -62,7 +62,9 @@ class _ResultState extends State<Result> {
                       fontSize: 22,
                       fontWeight: FontWeight.bold),
                 ),
-
+                Image.file(imageFile!,
+                height: 230,
+                width: 230,)
               ]),
             ),
           ),
