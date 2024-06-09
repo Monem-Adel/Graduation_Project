@@ -114,7 +114,7 @@ def parse_auto(start_state, transition_table: list,test_cases):
 
 
 def test_all():
-    test_cases = ["111","0011", "1001"]
+    test_cases = ["0","10","0011", "1001"]
     # image_path = "D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Scanner\\test.png"
     image_path = take_pic()
     image_path.lower().strip()
