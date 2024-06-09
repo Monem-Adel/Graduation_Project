@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:evaluator/pages/capture.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -19,6 +21,7 @@ class _ResultState extends State<Result> {
   bool isload = false;
   String? email1;
   String? password1;
+  String json="";
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
@@ -53,15 +56,17 @@ class _ResultState extends State<Result> {
                 SizedBox(height: 20,),
                 Text(
                   textAlign: TextAlign.center,
-                  'Hello result',
+                  testCase!,
                   style: TextStyle(
-                      color: Colors.green,
+                      color: Colors.black87,
                       fontSize: 22,
                       fontWeight: FontWeight.bold),
                 ),
+
               ]),
             ),
           ),
         ));
   }
+
 }

@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:evaluator/component/cust_buttom.dart';
 import 'package:evaluator/component/cust_textfield.dart';
+import 'package:evaluator/pages/result.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
 class Capture extends StatefulWidget {
@@ -12,11 +15,12 @@ class Capture extends StatefulWidget {
   @override
   State<Capture> createState() => _CaptureState();
 }
-
+File? imageFile;
+String? testCase;
 class _CaptureState extends State<Capture> {
   bool isImageSelected = false;
-  File? imageFile;
-  String? testCase;
+
+
   //File? _selectedImage;
   @override
   Widget build(BuildContext context) {
@@ -86,27 +90,29 @@ class _CaptureState extends State<Capture> {
                   text: 'Select image',
                 ),
               ),
-              Spacer(flex: 2,),
-              SizedBox(height: 100,),
+              SizedBox(height: 10,),
+              GestureDetector(
+                onTap: (){
+                  Upload_Image_and_Text();
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return Result();
+                  }));
+                },
+                child: Custom_Button(
+                  width: 120,
+                  text: 'Upload',
+                ),
+              ),
+              SizedBox(height: 10,),
               Column(
                 children: [
                   Center(
-                    child: imageFile==null ? Text('plz pick'):  // try this widget
+                    child: imageFile==null ? Text('plz write and pick then'):  // try this widget
                     Image.file( imageFile!, ),
                   ),
                   if(testCase!=null)
                     Text(testCase!)
                 ],
-              ),
-              SizedBox(height: 100,),
-              GestureDetector(
-                onTap: (){
-                  Navigator.pushNamed(context, 'Result');
-                },
-                child: Custom_Button(
-                  width: 120,
-                  text: 'Show result',
-                ),
               ),
             ]
           ),
@@ -146,4 +152,23 @@ class _CaptureState extends State<Capture> {
     }
   }
 
+  Upload_Image_and_Text() async {
+    String? text = testCase;
+    final request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            "http://192.168.1.4:5000/api")); /*here you should write your  public ip address */
+    request.fields["str"] = text!;
+    request.files.add(http.MultipartFile('image',
+        imageFile!.readAsBytes().asStream(), imageFile!.lengthSync(),
+        filename: imageFile!.path.split("/").last));
+    final response = await request.send();
+    http.Response res = await (http.Response.fromStream(response));
+    final resJson = jsonDecode(res.body);
+    setState((){
+      print ("I Love Egypt ");
+      print("res=${resJson['result']}");
+
+    });
+  }
 }
