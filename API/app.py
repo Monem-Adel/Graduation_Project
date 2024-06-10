@@ -3,6 +3,10 @@ import os
 import werkzeug
 import werkzeug.utils
 
+import Scanner 
+
+Scanner.test_all()
+
 app = Flask(__name__)
 
 
