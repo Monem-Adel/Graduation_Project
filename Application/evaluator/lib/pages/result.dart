@@ -27,7 +27,7 @@ class _ResultState extends State<Result> {
     return ModalProgressHUD(
         inAsyncCall: isload,
         child: Scaffold(
-          backgroundColor: Color(0xff8399A8),
+          backgroundColor: Color(0xff22B14C),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Form(
@@ -64,7 +64,17 @@ class _ResultState extends State<Result> {
                 ),
                 Image.file(imageFile!,
                 height: 230,
-                width: 230,)
+                width: 230,),
+                SizedBox(height: 20,),
+                Center(
+                  child: Text(
+                    'The result will be here in-shaa allah',
+                    style: TextStyle(
+                        color: Colors.white54,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
               ]),
             ),
           ),

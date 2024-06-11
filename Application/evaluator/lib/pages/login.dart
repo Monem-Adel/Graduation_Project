@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
     return ModalProgressHUD(
       inAsyncCall: isload,
       child: Scaffold(
-          backgroundColor: Color(0xff8399A8),
+          backgroundColor: Color(0xff22B14C),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Form(
@@ -46,7 +46,7 @@ class _LoginState extends State<Login> {
                       Text(
                         'Your Evaluator ',
                         style: TextStyle(
-                            color: Colors.white54,
+                            color: Colors.black87,
                             fontSize: 22,
                             fontWeight: FontWeight.bold),
                       ),
@@ -60,9 +60,9 @@ class _LoginState extends State<Login> {
                       Text(
                         'LOGIN',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 28,
-                            fontWeight: FontWeight.bold),
+                          ),
                       ),
                     ],
                   ),
@@ -127,7 +127,7 @@ class _LoginState extends State<Login> {
                     children: [
                       Text(
                         'don\'t have an account? ',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
                         child: Container(
                           child: Text(
                             'SignUp',
-                            style: TextStyle(color: Colors.white38),
+                            style: TextStyle(color: Colors.white54),
                           ),
                         ),
                       )

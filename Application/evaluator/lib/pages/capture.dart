@@ -20,7 +20,6 @@ String? testCase;
 class _CaptureState extends State<Capture> {
   bool isImageSelected = false;
 
-
   //File? _selectedImage;
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class _CaptureState extends State<Capture> {
           ),
         ],
       ),
-      backgroundColor: Color(0xff8399A8),
+      backgroundColor: Color(0xff22B14C),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 120,),
         child: ListView(
@@ -59,15 +58,15 @@ class _CaptureState extends State<Capture> {
                   hintText: '   Enter a test case',
                 ),
                 onChanged:(value) {
-                  print("moosss=$value");
+                  //print("moosss=$value");
                   testCase=value;// this variable - testCase - used to catch the text and use it when ever you want
-                  print("moosss=$testCase");
+                  //print("moosss=$testCase");
                 },onSubmitted: (value) {
-                print("moosss=$value");
+                //print("moosss=$value");
                 setState(() {
                   testCase=value;
                 });// this variable - testCase - used to catch the text and use it when ever you want
-                print("moosss=$testCase");
+                //print("moosss=$testCase");
               },
               ),
               SizedBox(height: 10,),
@@ -151,7 +150,6 @@ class _CaptureState extends State<Capture> {
       print(e.toString());
     }
   }
-
   Upload_Image_and_Text() async {
     String? text = testCase;
     final request = http.MultipartRequest(
@@ -170,5 +168,35 @@ class _CaptureState extends State<Capture> {
       print("res=${resJson['result']}");
 
     });
+  }
+
+  modifiedtheText(){
+    String? testCase = "This is a test case"; // Example input
+    String? originalString = testCase;
+
+    // Check if originalString is null to avoid null pointer exceptions
+    if (originalString != null) {
+      String? modifiedString = originalString.replaceAll(' ', ':');
+      String str = "";
+      List<String> tstcase = [];
+
+      for (int i = 0; i < modifiedString.length; i++) {
+        if (modifiedString[i] != ':') {
+          str += modifiedString[i];
+        } else {
+          // Add the accumulated string to the list
+          tstcase.add(str);
+          // Reset the str to accumulate next substring
+          str = "";
+        }
+      }
+
+      // Add the last accumulated substring 4 times (if any)
+      if (str.isNotEmpty) {
+        tstcase.add(str);
+      }
+
+      print(tstcase);
+    }
   }
 }

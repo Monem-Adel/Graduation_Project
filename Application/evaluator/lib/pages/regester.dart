@@ -34,7 +34,7 @@ class _RegisterState extends State<Register> {
     return ModalProgressHUD(
       inAsyncCall: isLoad,
       child: Scaffold(
-          backgroundColor: Color(0xff8399A8),
+          backgroundColor: Color(0xff22B14C),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Form(
@@ -67,7 +67,7 @@ class _RegisterState extends State<Register> {
                       Text(
                         'Sign Up',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 28,
                             fontWeight: FontWeight.bold),
                       ),
@@ -156,7 +156,7 @@ class _RegisterState extends State<Register> {
                     children: [
                       Text(
                         'Already have an account? ',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -165,7 +165,7 @@ class _RegisterState extends State<Register> {
                         child: Container(
                           child: Text(
                             'Sign In',
-                            style: TextStyle(color: Colors.white38),
+                            style: TextStyle(color: Colors.white54),
                           ),
                         ),
                       )

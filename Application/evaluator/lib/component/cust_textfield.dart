@@ -30,13 +30,13 @@ class _Custom_TextFormFieldState extends State<Custom_TextFormField> {
 
       onChanged: widget.onChange ,
       decoration: InputDecoration(
-            prefixIcon: Icon(color: Colors.white30, widget.ic),
+            prefixIcon: Icon(color: Colors.white54, widget.ic),
             hintText: widget.hintText,
             hintStyle: const TextStyle(
-            color: Colors.white30,
+            color: Colors.white54,
           ),
           enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white)),
+              borderSide: BorderSide(color: Colors.black87)),
           border: const OutlineInputBorder(borderSide: BorderSide()),),
     );
   }
