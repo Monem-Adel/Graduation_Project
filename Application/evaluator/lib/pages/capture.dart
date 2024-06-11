@@ -17,6 +17,7 @@ class Capture extends StatefulWidget {
 }
 File? imageFile;
 String? testCase;
+String result="";
 class _CaptureState extends State<Capture> {
   bool isImageSelected = false;
 
@@ -162,11 +163,10 @@ class _CaptureState extends State<Capture> {
         filename: imageFile!.path.split("/").last));
     final response = await request.send();
     http.Response res = await (http.Response.fromStream(response));
-    final resJson = jsonDecode(res.body);
+    var resJson = jsonDecode(res.body);
     setState((){
-      print ("I Love Egypt ");
+      result=res as String;
       print("res=${resJson['result']}");
-
     });
   }
 

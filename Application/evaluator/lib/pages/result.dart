@@ -68,7 +68,7 @@ class _ResultState extends State<Result> {
                 SizedBox(height: 20,),
                 Center(
                   child: Text(
-                    'The result will be here in-shaa allah',
+                    result, //the result will be added here
                     style: TextStyle(
                         color: Colors.white54,
                         fontSize: 22,
