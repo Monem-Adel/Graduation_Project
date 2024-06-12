@@ -577,7 +577,7 @@ def get_classified_transitions(img_path):
                 if w > h:
                     _,cropped_text_image = crop_transition(cropped_trans_image,x)
                     croppedimage,_ = crop_transition(cropped_trans_image,x)
-                    binary_matrix = image_to_binary_matrix(croppedimage)
+                    binary_matrix = image_to_binary_matrix(cropped_trans_image)
                     topmost, leftmost, rightmost = find_top_left_right_most(binary_matrix)
                     direction = determine_direction(topmost, leftmost, rightmost)
                     extracted_textt = enhance_and_extract_text(cropped_trans_image,zoom_factorr)
