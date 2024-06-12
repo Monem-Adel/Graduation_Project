@@ -183,28 +183,34 @@ def OCR(image):
         return text
 #####################################################################################
 def enhance_and_extract_text(image,zoom_factor):
+    def remove_special_characters(text):
+        pattern = r"[^\w]" 
+        cleaned_text = re.sub(pattern, "", text)
+        return cleaned_text
+
     def zoom(img, zoom_factor):
         return cv2.resize(img, None, fx=zoom_factor, fy=zoom_factor)
-
     # Load the image
     #image = cv2.imread(image_path)
     if image is None:
         print("Error: Unable to load the image.")
         return None
 
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    smoothed = cv2.bilateralFilter(gray, 9, 75, 75)
-    thresh = cv2.adaptiveThreshold(smoothed, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
-    edges = cv2.Canny(thresh, 30, 200)
+    #gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #smoothed = cv2.bilateralFilter(gray, 9, 75, 75)
+    #thresh = cv2.adaptiveThreshold(smoothed, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+    #edges = cv2.Canny(thresh, 30, 200)
     zoomed_edgess = cv2.resize(image, (650, 450))
-    zoomed_edges = zoom(zoomed_edgess, zoom_factor)
+    #zoomed_edges = zoom(zoomed_edgess, zoom_factor)
     #zoomed_edges = cv2.resize(image, (1080, 1920))
     reader = easyocr.Reader(['en'])
     result = reader.readtext(zoomed_edgess)
     extracted_text = ""
     for (bbox, text, prob) in result:
         extracted_text += text + " "
-    return extracted_text.strip()
+    cleaned_text = remove_special_characters(extracted_text)
+    return cleaned_text
+
 
 #####################################################################################
 def OCRT(image): 
