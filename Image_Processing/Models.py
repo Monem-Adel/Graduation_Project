@@ -7,7 +7,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import transforms
-from pytesseract import pytesseract
+#from pytesseract import pytesseract
 import easyocr
 import re
 #import sys
@@ -196,11 +196,11 @@ def enhance_and_extract_text(image,zoom_factor):
     smoothed = cv2.bilateralFilter(gray, 9, 75, 75)
     thresh = cv2.adaptiveThreshold(smoothed, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
     edges = cv2.Canny(thresh, 30, 200)
-    zoomed_edgess = cv2.resize(image, (1080, 1920))
+    zoomed_edgess = cv2.resize(image, (650, 450))
     zoomed_edges = zoom(zoomed_edgess, zoom_factor)
     #zoomed_edges = cv2.resize(image, (1080, 1920))
     reader = easyocr.Reader(['en'])
-    result = reader.readtext(zoomed_edges)
+    result = reader.readtext(zoomed_edgess)
     extracted_text = ""
     for (bbox, text, prob) in result:
         extracted_text += text + " "
