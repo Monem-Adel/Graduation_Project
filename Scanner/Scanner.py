@@ -71,6 +71,8 @@ def scan_auto(img_path):
         if(trans['type'] == 'Loop'):
             d = Transition.Arrow.Direction.Loop
         else:
+            H = trans['Head']
+            T = trans['Tail']
             d = trans['Direction']
             if(d == 'Left'):
                 d = Transition.Arrow.Direction.Left
@@ -82,10 +84,10 @@ def scan_auto(img_path):
                 d = Transition.Arrow.Direction.Down
         bb = trans['bbox']
         l = trans['Label']
-
+        
         scannered_labels.add(l)
             
-        scannered_trans.append(Transition.transition(l,bb,Arrow.arrow(d)))
+        scannered_trans.append(Transition.transition(l,bb,Arrow.arrow(d,H,T)))
 
     # create an automaton
     auto = Automaton.automaton(scannered_states,scannered_trans,scannered_labels,img_path)

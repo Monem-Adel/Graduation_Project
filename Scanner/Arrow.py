@@ -17,8 +17,8 @@ class arrow:
     # def __init__(self, headPoint, tailPoint , headLeftPoint = (), headRightPoint=()):
     def __init__(self, direction : Direction = None ,headPoint = (), tailPoint = () , headLeftPoint = (), headRightPoint=()):
         self.__direrction = direction
-        # self.__head = headPoint
-        # self.__tail = tailPoint
+        self.__head = headPoint
+        self.__tail = tailPoint
         # self.__headLeftPoint = headLeftPoint
         # self.__headRightPoint = headRightPoint
 

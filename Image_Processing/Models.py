@@ -609,8 +609,8 @@ def get_classified_transitions(img_path):
             tail = tail_coord
             if tran['type'] == 'Transition':
                 tran['Direction'] = arrowdir
-                tran['Head '] = head
-                tran['Tail '] = tail
+                tran['Head'] = head
+                tran['Tail'] = tail
          #print(f"Array of Transitions: {filtered_trans}")
         return filtered_trans
       except Exception as e:

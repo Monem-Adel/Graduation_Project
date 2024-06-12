@@ -42,8 +42,15 @@ class transition:
         self.__top_left = (Xt,Yt) # top coordinate
         self.__bottom_right = (Xb,Yb) # bottom coordinate
 
-    # setters for top_left & bottom right
-    # ...
+    def set_headAndTailPoint(self):
+        x,y = self.__top_left
+        arw = self.get_arrow()
+        p,q = arw.get_tail()
+        w,z = arw.get_head()
+        arw.set_tail((x+p,y+q))
+        arw.set_head((x+w,y+z))
+        self.set_arrow(arw)
+
     
     # getters
     def get_label(self):

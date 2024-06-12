@@ -68,7 +68,9 @@ class automaton:
         # case: is the No. of transitions sufficient w.r.t No. of states(n) => [|T| >= n-1]
         if (len(transitions) < len(self.__states)):
             raise Exception("ERROR: the No. of transitions less than the No. of states OR there exist isolated state")
-        else : self.__transitions = transitions
+        else : 
+            self.__transitions = transitions
+            
 
     def set_labels(self, labels : set):
         if(len(labels) > len(self.__transitions)):
@@ -140,26 +142,32 @@ class automaton:
 
     # method to loop over states with one given transition & return the nearest one
     # def nearest_states(arrow:Arrow.arrow, states:list[State.state]):
-    def nearest_states(self,arw:Arrow.arrow):
+    def nearest_states(self,trans: Transition.transition):
         minDistance_T = inf # indicate to an infinity, T; for tail
         minDistance_H = inf # indicate to an infinity, H; for head
         # nearest = State.state() # may raise an error here cause no arguments in constructors
         # distance_back: distance between tail & source state
         # distance_front: distance between head & destination state
-        for state in self.__states:
-            # knowing the nearest state to the tail (defining source)
-            #هتعدل هنا على شوية حاجات؛ هتخلي الميثود اللي بتحسب مسافة واللي بتقارن ستاتيك ميثود
-            distance_Back = automaton.compute_distance(arw.get_tail(),state.get_bottom_coordinate())
-            if (automaton.compare_distances(distance_Back,minDistance_T)):
-                minDistance_T = distance_Back
-                source = state
-            # knowing the nearest state to the head (defining destination)
-            distance_front = automaton.compute_distance(arw.get_head(),state.get_top_coordinate()) 
-            if (automaton.compare_distances(distance_front,minDistance_H)):
-                minDistance_H = distance_front
-                destination = state
-        return (source,destination)  
-        # Transition.transition.set_source(source)
+        if(trans.get_arrow().get_direction().value != 0):
+            for state in self.__states:
+                # knowing the nearest state to the tail (defining source)
+                distance_Back = automaton.compute_distance(trans.get_arrow().get_tail(),state.get_bottom_coordinate())
+                if (automaton.compare_distances(distance_Back,minDistance_T)):
+                    minDistance_T = distance_Back
+                    source = state
+                # knowing the nearest state to the head (defining destination)
+                distance_front = automaton.compute_distance(trans.get_arrow().get_head(),state.get_top_coordinate()) 
+                if (automaton.compare_distances(distance_front,minDistance_H)):
+                    minDistance_H = distance_front
+                    destination = state
+        else:
+            for state in self.__states:
+                distance = automaton.compute_distance(trans.get_bottom_coordinate(),state.get_top_coordinate())
+                if (automaton.compare_distances(distance,minDistance_H)):
+                    minDistance_H = distance
+                    source = destination = state
+
+        return (source,destination)
 
     ##########################################
     # nearst state method depending on the arrow direction
@@ -224,7 +232,8 @@ class automaton:
     # method to prepare the source & destination for each arrow (transition)
     def setting_src_des(self):
         for trans in self.__transitions:
-            # source, destination = self.nearest_states(trans.get_arrow())
+            trans.set_headAndTailPoint()
+            # source, destination = self.nearest_states(trans)
             source, destination = self.nearest_states2(trans)
             trans.set_source(source)
             trans.set_destination(destination)
