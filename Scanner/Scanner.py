@@ -99,12 +99,14 @@ def scan_auto(img_path):
     return (auto,table,start_state)
     # return auto
 
-# auto ,t,st = scan_auto(r"H:\Graduation Project\Graduation_Project\Drawing_Automatons\auto_2.jpg")
-# print(auto.get_states())
-# print(auto.get_transitions())
-# print(st)
-# print('#'*10)
-# print(t)
+auto ,t,st = scan_auto(r"H:\Graduation Project\Graduation_Project\Drawing_Automatons\auto_3E.jpg")
+print(auto.get_states())
+print('#'*100)
+print(auto.get_transitions())
+print('#'*100)
+print(st)
+print('#'*100)
+print(t)
 
 # print(scan_auto(img_path))
 
@@ -127,4 +129,4 @@ def test_all():
         print(f"result for test case no {i} is {result}")
         i = i+1
 
-test_all()
+# test_all()

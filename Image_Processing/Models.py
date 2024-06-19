@@ -486,10 +486,12 @@ def binary_image_size(binary_image):
         return height, width, d
 
 # model_yolo = YOLO("D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing\\SegModel.pt")
-model_yolo = YOLO('FinalSegmentationModel.pt')
+# model_yolo = YOLO('FinalSegmentationModel.pt')
+model_yolo = YOLO(r'H:\Graduation Project\Graduation_Project\Image_Processing\FinalSegmentationModel.pt')
 model_classification = Net()
 # model_classification.load_state_dict(torch.load("D:\\3loom\\4thYear\\2ndSemester\\GraduationProject\\Graduation_Project\\Image_Processing\\classification_model_weights.pth"))
-model_classification.load_state_dict(torch.load('ClassificationModel_weights.pth'))
+# model_classification.load_state_dict(torch.load('ClassificationModel_weights.pth'))
+model_classification.load_state_dict(torch.load(r'H:\Graduation Project\Graduation_Project\Image_Processing\ClassificationModel_weights.pth'))
 data_transform = transforms.Compose([
     transforms.Resize((32, 32)),  
     transforms.ToTensor(),
